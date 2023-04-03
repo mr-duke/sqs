@@ -25,17 +25,18 @@ namespace PokemonApp.Controllers
         [HttpGet("{number}")]
         public async Task<ActionResult<Pokemon>> GetPokemon(int number)
         {
-            if (!_cache.TryGetValue(number, out Pokemon pokemon))
+            Pokemon pokemon = new Pokemon();
+            // First, check if the Pokemon is already in the database
+            pokemon = await _pokemonService.GetPokemonByIdFromDatabase(number);
+            // If not, query the PokeAPI for the Pokemon data
+            if (pokemon == null)
             {
-                pokemon = await _pokemonService.GetPokemon(number);
+                pokemon = await _pokemonService.GetPokemonByIdFromAPI(number);
                 if (pokemon == null)
                 {
                     return NotFound();
                 }
-
-                _cache.Set(number, pokemon);
             }
-
             return pokemon;
         }
     }

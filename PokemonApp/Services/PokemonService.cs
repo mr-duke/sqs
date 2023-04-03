@@ -16,23 +16,23 @@ namespace PokemonApp.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Pokemon> GetPokemon(int number)
+        public async Task<Pokemon> GetPokemonByIdFromDatabase(int number)
         {
             Pokemon pokemon = new Pokemon();
-            // First, check if the Pokemon is already in the database
             pokemon = await _dbContext.Pokemons.FirstOrDefaultAsync(p => p.Number == number);
-            if (pokemon != null)
-            {
-                return pokemon;
-            }
+            
+            return pokemon;
+            
+        }
 
-            // If not, query the PokeAPI for the Pokemon data
+        public async Task<Pokemon> GetPokemonByIdFromAPI(int number)
+        {
+            Pokemon pokemon = new Pokemon();
             HttpResponseMessage response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/{number}");
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-
 
             PokemonDTO dto = new PokemonDTO(response);
 
