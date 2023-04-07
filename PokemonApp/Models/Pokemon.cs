@@ -8,6 +8,16 @@
         public string Type1 { get; set; }
         public string Type2 { get; set; }
         public string ImageUrl { get; set; }
-        //public string Description { get; set; }
+
+        public Pokemon() { }
+
+        public Pokemon(int number, string name, string type1, string type2, string imageUrl)
+        {
+            Number = number;
+            Name = name;
+            Type1 = type1;
+            Type2 = type2;
+            ImageUrl = imageUrl;
+        }
     }
 }

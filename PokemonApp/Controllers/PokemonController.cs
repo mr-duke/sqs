@@ -13,9 +13,9 @@ namespace PokemonApp.Controllers
     {
         private readonly ILogger<PokemonController> _logger;
         private readonly IMemoryCache _cache;
-        private readonly PokemonService _pokemonService;
+        private readonly IPokemonService _pokemonService;
 
-        public PokemonController(ILogger<PokemonController> logger, IMemoryCache cache, PokemonService pokemonService)
+        public PokemonController(ILogger<PokemonController> logger, IMemoryCache cache, IPokemonService pokemonService)
         {
             _logger = logger;
             _cache = cache;
@@ -23,7 +23,7 @@ namespace PokemonApp.Controllers
         }
 
         [HttpGet("{number}")]
-        public async Task<ActionResult<Pokemon>> GetPokemon(int number)
+        public async Task<IActionResult> GetPokemon(int number)
         {
             Pokemon pokemon = new Pokemon();
             // First, check if the Pokemon is already in the database
@@ -37,7 +37,7 @@ namespace PokemonApp.Controllers
                     return NotFound();
                 }
             }
-            return pokemon;
+            return Ok(pokemon);
         }
     }
 }

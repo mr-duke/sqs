@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PokemonApp;
+using PokemonApp.Models;
 using PokemonApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +16,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient<PokemonService>();
-builder.Services.AddScoped<PokemonService>();
+builder.Services.AddHttpClient<IPokemonService>();
+//builder.Services.AddScoped<PokemonService>();
+builder.Services.AddScoped<IPokemonService, PokemonService>();
+builder.Services.AddScoped<IHttpClientWrapper, HttpClientWrapper> ();
 
 
 // Add caching configuration

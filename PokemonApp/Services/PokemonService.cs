@@ -5,14 +5,14 @@ using System.Text.Json;
 
 namespace PokemonApp.Services
 {
-    public class PokemonService
+    public class PokemonService : IPokemonService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientWrapper _httpClientWrapper;
         private readonly PokemonDbContext _dbContext;
 
-        public PokemonService(HttpClient httpClient, PokemonDbContext dbContext)
+        public PokemonService(IHttpClientWrapper httpClientWrapper, PokemonDbContext dbContext)
         {
-            _httpClient = httpClient;
+            _httpClientWrapper = httpClientWrapper;
             _dbContext = dbContext;
         }
 
@@ -20,15 +20,15 @@ namespace PokemonApp.Services
         {
             Pokemon pokemon = new Pokemon();
             pokemon = await _dbContext.Pokemons.FirstOrDefaultAsync(p => p.Number == number);
-            
+
             return pokemon;
-            
+
         }
 
         public async Task<Pokemon> GetPokemonByIdFromAPI(int number)
         {
             Pokemon pokemon = new Pokemon();
-            HttpResponseMessage response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/{number}");
+            HttpResponseMessage response = await _httpClientWrapper.GetAsync($"https://pokeapi.co/api/v2/pokemon/{number}", HttpCompletionOption.ResponseHeadersRead);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
