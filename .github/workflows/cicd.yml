@@ -27,4 +27,4 @@ jobs:
       run: dotnet build --no-restore ./PokemonApp/PokemonApp.csproj
       
     - name: Run test
-      run: dotnet test --no-build --verbosity normal ./PokemonApp.Tests/PokemonApp.Tests.csproj
+      run: dotnet test --verbosity normal ./PokemonApp.Tests/PokemonApp.Tests.csproj
