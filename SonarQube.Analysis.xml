@@ -1,0 +1,6 @@
+<SonarQubeAnalysisProperties xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Property Name="sonar.sources">PokemonApp</Property>
+  <Property Name="sonar.tests">PokemonApp.Tests</Property>
+  <Property Name="sonar.language">csharp</Property>
+  <Property Name="sonar.cs.opencover.reportsPaths">coverage.xml</Property>
+</SonarQubeAnalysisProperties>
