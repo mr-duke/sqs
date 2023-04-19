@@ -52,17 +52,3 @@ jobs:
         dotnet sonarscanner begin /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
         dotnet build
         dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-    - name: Upload coverage report to SonarCloud
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        args: >
-          -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
-          -Dsonar.projectKey="mr-duke_sqs"
-          -Dsonar.projectName="sqs"
-          -Dsonar.organization="mr-duke"
-          -Dsonar.sources="PokemonApp"
-          -Dsonar.tests="PokemonApp.Tests"
-          -Dsonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
