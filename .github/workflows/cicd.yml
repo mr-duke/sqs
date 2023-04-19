@@ -28,7 +28,6 @@ jobs:
       
     - name: Run test
       run: dotnet test --no-build --verbosity normal
-  sonar-analysis:
     #name: Build and analyze
     runs-on: ubuntu-latest
     steps:
@@ -104,4 +103,3 @@ jobs:
             -Dsonar.coverage.exclusions=**/Tests/**/*,**/bin/**/*,**/obj/**/*
             -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
             -Dsonar.projectName=sqs
-            -Dsonar.cs.opencover.reportsPaths=coverage.opencover.xml
