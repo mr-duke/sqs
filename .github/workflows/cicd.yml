@@ -74,7 +74,6 @@ jobs:
           dotnet build --no-incremental
           coverlet ./PokemonApp.Tests/bin/Debug/net7.0/PokemonApp.Tests.dll --target "dotnet" --targetargs "test --no-build" -f=opencover
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-  sonarcloud-code-coverage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
