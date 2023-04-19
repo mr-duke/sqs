@@ -60,7 +60,6 @@ jobs:
       with:
         args: >
           -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
-          -Dsonar.host.url="https://sonarcloud.io"
           -Dsonar.projectKey="mr-duke_sqs"
           -Dsonar.projectName="mr-duke"
           -Dsonar.sources="PokemonApp"
