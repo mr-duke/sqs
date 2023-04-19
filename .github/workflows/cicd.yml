@@ -74,17 +74,22 @@ jobs:
           dotnet build --no-incremental
           coverlet ./PokemonApp.Tests/bin/Debug/net7.0/PokemonApp.Tests.dll --target "dotnet" --targetargs "test --no-build" -f=opencover
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+  sonarcloud-code-coverage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
+
       - name: Build and Test
-        run: dotnet build --configuration Release
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        run: |
+          dotnet build --configuration Release
+          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
       - name: SonarCloud Code Coverage
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -95,5 +100,8 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.projectKey=mr-duke_sqs
+            -Dsonar.organization=mr-duke
             -Dsonar.coverage.exclusions=**/Tests/**/*,**/bin/**/*,**/obj/**/*
             -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
+            -Dsonar.projectName=sqs
+            -Dsonar.cs.opencover.reportsPaths=coverage.opencover.xml
