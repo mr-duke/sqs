@@ -31,27 +31,27 @@ jobs:
   sonarcloud-code-coverage:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x'
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
 
-    - name: Build and Test
-      run: dotnet build --configuration Release
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+      - name: Build and Test
+        run: dotnet build --configuration Release
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
-    - name: SonarCloud Code Coverage
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-        args: >
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.projectKey=mr-duke_sqs
-          -Dsonar.coverage.exclusions=**/Tests/**/*,**/bin/**/*,**/obj/**/*
-          -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
+      - name: SonarCloud Code Coverage
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.projectKey=mr-duke_sqs
+            -Dsonar.coverage.exclusions=**/Tests/**/*,**/bin/**/*,**/obj/**/*
+            -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
