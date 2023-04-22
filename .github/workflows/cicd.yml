@@ -68,7 +68,7 @@ jobs:
       - name: Test and generate code coverage report
         run: | 
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"
-          cat **/coverage.opencover.xml
+          cat ./**/coverage.opencover.xml
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
