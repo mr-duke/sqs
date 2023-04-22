@@ -54,13 +54,12 @@ jobs:
 
       - name: Install Vue3 dependencies
         run: |
-          cd Client
+          cd ./PokemonApp/Client
           npm install
 
       - name: Build Vue3 project
         run: |
           pwd
-          cd ./PokemonApp/Client
           npm run build
 
       - name: Analyze with SonarCloud
