@@ -66,7 +66,7 @@ jobs:
         run: |
           dotnet tool install --global coverlet.console
       - name: Test and generate code coverage report
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        run: dotnet test --collect:"XPlat Code Coverage"
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
