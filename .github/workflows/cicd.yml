@@ -74,4 +74,5 @@ jobs:
           dotnet build --no-incremental
           cd PokemonApp.Tests
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"
+          cd ..
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
