@@ -47,11 +47,15 @@ jobs:
           COVERLET_OUTPUT: ./testresults/coverage/
       - name: SonarScanner for .NET
         uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          projectBaseDir: './PokemonApp'
-          extraProperties: |
-            sonar.coverageReportPaths=$(COVERLET_OUTPUT)*.xml
-            sonar.cs.opencover.reportsPaths=$(COVERLET_OUTPUT)*.xml
-            sonar.login: ${{ secrets.SONAR_TOKEN }}
-            sonar.projectKey: mr-duke_sqs
-            sonar.organization: mr-duke
+          args: >
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.projectKey=mr-duke_sqs
+            -Dsonar.organization=mr-duke
+            -Dsonar.coverageReportPaths=$(COVERLET_OUTPUT)*.xml
+            -Dsonar.cs.opencover.reportsPaths=$(COVERLET_OUTPUT)*.xml
+            -Dsonar.projectName=sqs
