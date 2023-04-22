@@ -47,22 +47,6 @@ jobs:
       - name: Run unit tests with Coverlet
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-
-      - name: Install Vue3 dependencies
-        run: |
-          cd ./PokemonApp/Client
-          npm install
-
-      - name: Build Vue3 project
-        run: |
-          pwd
-          cd ./PokemonApp/Client
-          npm run build
-
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         env:
