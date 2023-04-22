@@ -74,8 +74,8 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.projectKey=mr-duke_sqs
             -Dsonar.organization=mr-duke
-            -Dsonar.sources=. 
-            -Dsonar.tests=. 
+            -Dsonar.sources=./PokemonApp 
+            -Dsonar.tests=./PokemonApp.Tests
             -Dsonar.exclusions=**/bin/**,**/obj/**,**/node_modules/** 
             -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
             -Dsonar.projectName=sqs    
