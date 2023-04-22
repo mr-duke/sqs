@@ -63,7 +63,7 @@ jobs:
           npm run build
 
       - name: Analyze with SonarCloud
-        uses: sonarsource/sonarcloud-github-action@v2
+        uses: sonarsource/sonarcloud-github-action@master
         with:
           organization: mr-duke
           project: sqs
