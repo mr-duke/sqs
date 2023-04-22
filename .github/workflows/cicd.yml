@@ -46,7 +46,7 @@ jobs:
         env:
           COVERLET_OUTPUT: ./testresults/coverage/
       - name: SonarScanner for .NET
-        uses: SonarSource/sonar-scanner-action@v1
+        uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: './PokemonApp'
           extraProperties: |
