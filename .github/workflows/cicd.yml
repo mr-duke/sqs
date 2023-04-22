@@ -28,27 +28,30 @@ jobs:
       
     - name: Run test
       run: dotnet test --no-build --verbosity normal
-  sonarcloud-code-coverage:
+  sonarcloud:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout source code
-      uses: actions/checkout@v2
-
-    - name: Restore NuGet packages
-      run: dotnet restore
-
-    - name: Build and test code
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-
-    - name: Install SonarCloud Scanner
-      run: dotnet tool install --global dotnet-sonarscanner
-
-    - name: Run SonarCloud Scanner
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: |
-        dotnet sonarscanner begin /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
-        dotnet build
-        dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.x
+      - name: Build
+        run: dotnet build --configuration Release
+      - name: Install Coverlet
+        run: dotnet tool install --global coverlet.console
+      - name: Test with Coverlet
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        env:
+          COVERLET_OUTPUT: ./testresults/coverage/
+      - name: SonarScanner for .NET
+        uses: SonarSource/sonar-scanner-action@v1
+        with:
+          projectBaseDir: './PokemonApp'
+          extraProperties: |
+            sonar.coverageReportPaths=$(COVERLET_OUTPUT)*.xml
+            sonar.cs.opencover.reportsPaths=$(COVERLET_OUTPUT)*.xml
+            sonar.login: ${{ secrets.SONAR_TOKEN }}
+            sonar.projectKey: mr-duke_sqs
+            sonar.organization: mr-duke
