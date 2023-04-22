@@ -60,6 +60,7 @@ jobs:
       - name: Build Vue3 project
         run: |
           pwd
+          cd ./PokemonApp/Client
           npm run build
 
       - name: Analyze with SonarCloud
