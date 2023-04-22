@@ -31,27 +31,34 @@ jobs:
   sonarcloud:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 7.0.x
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-      - name: Build
-        run: dotnet build --configuration Release
-      - name: Install Coverlet
-        run: dotnet tool install --global coverlet.console
-      - name: Test with Coverlet
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-        env:
-          COVERLET_OUTPUT: ./testresults/coverage/
-      - name: SonarScanner for .NET
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14.x'
+
+    - name: Install dependencies
+      run: |
+        cd PokemonApp/
+        dotnet restore
+        cd PokemonApp/Client
+        npm install
+
+    - name: Build and test
+      run: |
+        cd PokemonApp/
+        dotnet build --configuration Release
+        dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
+    - name: Run SonarCloud analysis
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
@@ -60,6 +67,5 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.projectKey=mr-duke_sqs
             -Dsonar.organization=mr-duke
-            -Dsonar.coverageReportPaths=$(COVERLET_OUTPUT)*.xml
-            -Dsonar.cs.opencover.reportsPaths=$(COVERLET_OUTPUT)*.xml
+            -Dsonar.cs.opencover.reportsPaths=./PokemonApp/**/coverage.opencover.xml
             -Dsonar.projectName=sqs
