@@ -70,7 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.sources="PokemonApp" /d:sonar.dotnet.excludeTestProjects=true
-          dotnet build --no-incremental
-          dotnet test --collect:"XPlat Code Coverage;Format=opencover"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.sources="PokemonApp" /d:sonar.inclusions="PokemonApp/*.cs"
+          dotnet build PokemonApp/PokemonApp.csproj --no-incremental
+          dotnet test PokemonApp.Tests/PokemonApp.Tests.csproj --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
