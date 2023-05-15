@@ -1,8 +1,21 @@
 # Projektdokumentation
 *Dokumentation zur Projektarbeit im Fach "Software-Qualitätssicherung" an der TH Rosenheim (SoSe23) von Karl Herzog*
+Der Aufbau dieser Dokumentation orientiert sich am offiziellen [Arc42-Template](https://docs.arc42.org/home/)
 
-## Fachlicher Kontext:
+## Kapitel 1: Einleitung
+### Fachliche Anforderungen
 Die *PokemonApp* soll es dem Nutzer ermöglichen, Basisinformationen zu allen derzeit bekannten Pokemon zu erhalten. Nach Eingabe der individuellen Nummer eines Pokemon werden sein Name, sein Bild in Form eines Sprite sowie sein Typ bzw. Typen (sofern das Pokemon zwei Typen besitzt) angezeigt. Sind die entsprechenden Daten in der angebundenen SQL-Datenbank bereits vorhanden, werden sie direkt über eine Datenbankabfrage gewonnen. Ansonsten erfolgt eine HTTP-ReST Anfrage über die öffentlich verfügbare [PokeAPI](https://pokeapi.co/) und die erhaltenen Daten in der Datenbank abgespeichert. Dadurch soll sichergestellt werden, dass im Falle des Nichtvorhandenseins der API dennoch ein Mindestmaß an positiver User Experience gegeben ist und bereits vorhandene Daten weiterhin abgerufen werden können.
+### Qualitätsziele
+Die relevanten Qulaitätsziele werden in Kapitel 10 im Details erläutert.
+### Stakeholder
+Stakeholder des Projekts sind die Studenten sowie der Dozent im Fach "Software-Qualitätssicherung" an der TH Rosenheim.
+
+## Kapitel 2: Beschränkungen
+Bekannte, nicht veränderbare Beschränkungen sind die Vorgaben des Dozenten zur Grundstruktur des Projekts. Dieses soll aus folgenden Elementen bestehen:
+- Frontend
+- Backend
+- Datenbank
+- Externe REST-API
 
 ## Nicht-funktionale Qualitätsanforderungen:
 (Arc42, nonfunctional requirements, Qualitätseigenschaften ("-ilities"))
@@ -38,6 +51,44 @@ Die *PokemonApp* soll es dem Nutzer ermöglichen, Basisinformationen zu allen de
 - UI-Tests: 
     - Selenium / Selenium WebDriver API / Kombination mit xUnit oder SpecFLow
     - CodedUI
+- Lasttest:
+    - K6
+    - (Apache JMeter)
+- Security:
+    - OWAP ZAP
+    - Dependency Check
+    - (Dependa-bot)
+
+## Geplanter Aufbau: (Orientieren am Arc42 - Framework: docs.arc42.org)
+- Prerequisites:
+    - Node
+    - .Net 7
+    - PostgreSQL
+- Fachlicher Kontext
+- Third Party Libraries, Schnittstellen (API-Dokumentation)
+- Architekturentscheidungen (evtl. mit Bild)
+- Tests
+    - Unit Test: JUnit, Mockito
+    - Architektur Test: Arch Unit
+    - Integration Test: RestAssured, Test Containers, WireMock/Hoverfly
+    - E2E + UI Tests: Cypress (+Mocha), Selenium (+Junit), Cucumber(BDD), Geb
+    - Last Performance Test: 
+        - Test Setup Architecture
+            - CI-based    
+            - In-Cluster
+            - Dedicated
+        - Frameworks: K6(!), Gatling, JMeter, Locust
+    - Security Tests
+        - Statische Analyse 
+            - Sonar / Sonarcloud
+            - Test Coverage
+            - Zero-Violation-Policy
+        - DependaBot (Github Action verfügbar)
+        - OWASP Dependency Check
+        - IaC Security (Terraform, Dockerfile, k8s): Snyk, Aqua
+        - ZED Attack Proxy
+         
+
 
 
 Aufgaben: 
@@ -46,3 +97,8 @@ Aufgaben:
     - ~~Kompiliert der Code?~~
     - ~~laufen Unittest?~~
 - ~~Erste Tests bereits schreiben~~
+- Lasttest für die API schreiben
+- Security-Test schreiben
+    - Dependency Check (per GitHub Action)
+    - (evtl. Versionen autmoatisch aktualisieren lassen per Github Action)
+    - Mit OWASP ZAP testen
