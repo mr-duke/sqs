@@ -21,7 +21,7 @@ Bekannte, nicht veränderbare Beschränkungen sind die Vorgaben des Dozenten zur
 Das Kontextdiagramm zeigt den Kontext des Systems, seine Abgrenzung nach Außen, sowie seine Interaktion mit Benutzern und externen Systemen.
 ![Kontextdiagramm](Grafiken/Kontextdiagramm.png)
 
-## Kapitel 4: Lösungstrategie
+## Kapitel 4: Lösungsstrategie
 ### Technische Entscheidungen
 Zur Umsetzung der Anwendung wurde folgender Technikstack gewählt:
 - Frontend: Vue 3
@@ -42,7 +42,7 @@ Bei **.NET** handelt es sich um eines der meistverbreitetsten Frameworks für An
 **PokeAPI** ist ein hervoragend gepflegtes, umfangreiches REST-API zum Abruf von Pokemon-Daten. Seine kostenlose Nutzung und der Verzicht auf einen API-Key gestlten die Einbindung in die PokemonApp besonders einfach und performant.
 
 ### Qualitätsentscheidungen
-Die festgelegten Qualitätsziele für die PokemonApp werden in [Kapitel 10](##kapitel-10:-qualität) näher ausgeführt.
+Die festgelegten Qualitätsziele für die PokemonApp werden in [Kapitel 10](#kapitel-10:-qualität) näher ausgeführt.
 
 
 ## Kapitel 10: Qualität
