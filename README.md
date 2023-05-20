@@ -17,7 +17,37 @@ Bekannte, nicht veränderbare Beschränkungen sind die Vorgaben des Dozenten zur
 - Datenbank
 - Externe REST-API
 
-## Nicht-funktionale Qualitätsanforderungen:
+## Kapitel 3: Kontext
+Das Kontextdiagramm zeigt den Kontext des Systems, seine Abgrenzung nach Außen, sowie seine Interaktion mit Benutzern und externen Systemen.
+![Kontextdiagramm](Grafiken/Kontextdiagramm.png)
+
+## Kapitel 4: Lösungstrategie
+### Technische Entscheidungen
+Zur Umsetzung der Anwendung wurde folgender Technikstack gewählt:
+- Frontend: Vue 3
+- Backend: .NET 7
+- Datenbank: PostgreSQL
+- Externe REST-API: [PokeAPI](https://pokeapi.co/)
+
+![Technikstack](Grafiken/Technikstack.png)
+
+Zur Begründung:
+
+Bei **Vue.js** in der Version 3 handelt es sich um ein modernes JavaScript-Framework, welches neben Angular und React sehr hohe, weltweite Verbreitung und Populartität genießt und die Vorteile der beiden genannten Frameworks optimal verbindet. Desweiteren zeichnet sich Vue durch eine eher flache Lernkurve und eien hervorragende Dokumentation aus, was den Einstieg für neue Entwickler erleichtert.
+
+Bei **.NET** handelt es sich um eines der meistverbreitetsten Frameworks für Anwendungsentwicklung, das sich etabliert hat und von den meisten Entwicklenr beherrscht wird.
+
+**PostgreSQL** ist eine modernes und ebenfalls weitverbreitetes SQL-Datenbank, die sich neben Sicherheits-Features auch durch Skalierbarkeit und hohe Flexibilität. Als Datenbanksystem ist es daher das Mittel der Wahl.
+
+**PokeAPI** ist ein hervoragend gepflegtes, umfangreiches REST-API zum Abruf von Pokemon-Daten. Seine kostenlose Nutzung und der Verzicht auf einen API-Key gestlten die Einbindung in die PokemonApp besonders einfach und performant.
+
+### Qualitätsentscheidungen
+Die festgelegten Qualitätsziele für die PokemonApp werden in [Kapitel 10](##kapitel-10:-qualität) näher ausgeführt.
+
+
+## Kapitel 10: Qualität
+
+### Nicht-funktionale Qualitätsanforderungen:
 (Arc42, nonfunctional requirements, Qualitätseigenschaften ("-ilities"))
 
 - **Leistung und Skalierbarkeit**: Die Anwendung soll nach Benutzereingaben eine Antwortzeit von durchschnittlich maximal 1 Sekunde einhalten, um eine angemessene Benutzererfahrung zu gewährleisten und Frustration auf Seiten der Nutzer zu verhindern.
