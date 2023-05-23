@@ -3,42 +3,20 @@ using Microsoft.Extensions.Configuration;
 using PokemonApp;
 using PokemonApp.Models;
 using PokemonApp.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add database configuration
-
-builder.Services.AddDbContext<PokemonDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PokemonDB")));
-
-// Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient<IPokemonService>();
-//builder.Services.AddScoped<PokemonService>();
-builder.Services.AddScoped<IPokemonService, PokemonService>();
-builder.Services.AddScoped<IHttpClientWrapper, HttpClientWrapper> ();
-
-
-// Add caching configuration
-builder.Services.AddMemoryCache();
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public class Program 
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+        });
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
