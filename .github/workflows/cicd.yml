@@ -37,6 +37,8 @@ jobs:
    
     - name: Run test
       run: |
+            dotnet restore
+            dotnet build
             # Set up the connection string for the tests
             export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
             dotnet test --no-build --verbosity normal
