@@ -12,6 +12,15 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: su
+          POSTGRES_DB: PokemonDB
     steps:
     - uses: actions/checkout@v3
     
@@ -25,9 +34,12 @@ jobs:
       
     - name: Build
       run: dotnet build --no-restore
-      
+   
     - name: Run test
-      run: dotnet test --no-build --verbosity normal
+      run: |
+            # Set up the connection string for the tests
+            export ConnectionStrings__DefaultConnection="Server=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432;"
+            dotnet test --no-build --verbosity normal
   sonar-analysis:
     #name: Build and analyze
     runs-on: ubuntu-latest
