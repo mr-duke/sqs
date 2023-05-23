@@ -47,6 +47,15 @@ jobs:
   sonar-analysis:
     #name: Build and analyze
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: su
+          POSTGRES_DB: PokemonDB
     steps:
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -88,5 +97,8 @@ jobs:
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/bin/**,**/obj/**,**/PokemonApp/Client/**"
           dotnet build --no-incremental
+          export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update --project PokemonApp --startup-project PokemonApp
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
