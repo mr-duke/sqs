@@ -38,7 +38,7 @@ jobs:
     - name: Run test
       run: |
             # Set up the connection string for the tests
-            export ConnectionStrings__DefaultConnection="Server=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432;"
+            export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
             dotnet test --no-build --verbosity normal
   sonar-analysis:
     #name: Build and analyze
