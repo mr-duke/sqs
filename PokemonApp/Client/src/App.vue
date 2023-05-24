@@ -3,8 +3,8 @@
     <h1>PokemonApp</h1>
     <input class="form-control my-2" v-model="inputValue" type="number" placeholder="Enter a Pokemon number"
       :min="minValue" :max="maxValue" @input="checkInput">
-    <button class="btn btn-primary mb-2" :disabled="isDisabled" @click="getPokemon">Gotta catch 'em all!</button>
-    <div class="alert alert-warning" role="alert" v-if="notification">{{ notification }}</div>
+    <button class="btn btn-primary mb-2" data-cy="submit-button" :disabled="!isValidInput()" @click="getPokemon">Gotta catch 'em all!</button>
+    <div class="alert alert-warning" data-cy="error-message" role="alert" v-if="!isValidInput()">{{ notification }}</div>
     <div v-if="pokemon">
       <h1>{{ pokemon.name }}</h1>
       <h2>{{ pokemon.number }} </h2>
@@ -29,18 +29,20 @@ export default {
       pokemon: null
     }
   },
-  computed: {
-    isDisabled() {
-      return this.inputValue === null || this.inputValue < this.minValue || this.inputValue > this.maxValue
-    }
-  },
   methods: {
-    checkInput() {
-      if (this.inputValue < this.minValue || this.inputValue > this.maxValue) {
+    isValidInput() {
+      let validInput
+      const parsedValue = parseInt(this.inputValue, 10);
+
+      if (this.inputValue < this.minValue || this.inputValue > this.maxValue || isNaN(parsedValue) || !Number.isInteger(parsedValue)) {
         this.notification = `Input value must be between ${this.minValue} and ${this.maxValue}`
+        validInput = false
       } else {
         this.notification = null
+        validInput = true
       }
+      
+      return validInput
     },
 
     async getPokemon() {
