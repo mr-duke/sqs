@@ -102,3 +102,14 @@ jobs:
           dotnet ef database update --project PokemonApp --startup-project PokemonApp
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+  dependenc-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install OWASP Dependency Check
+        run: |
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.2.1/dependency-check-8.2.1-release.zip
+          unzip dependency-check-8.2.1-release.zip
+          rm dependency-check-8.2.1-release.zip
+          cd dependency-check
+          ls
+
