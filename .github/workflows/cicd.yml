@@ -90,26 +90,36 @@ jobs:
       - name: Install Coverlet
         run: |
           dotnet tool install --global coverlet.console
-      - name: Install OWASP Dependency Check
-        run: |
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.2.1/dependency-check-8.2.1-release.zip
-          unzip dependency-check-8.2.1-release.zip
-          rm dependency-check-8.2.1-release.zip
-          ./dependency-check/bin/dependency-check.sh -s . --out security --format XML
-      - name: Upload OWASP Dependency Check reports
-        uses: actions/upload-artifact@v2
-        with:
-          name: dependency-check-reports
-          path: security
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/bin/**,**/obj/**,**/PokemonApp/Client/**" /d:sonar.dependencyCheck.reportPath=security/dependency-check-report.xml
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/bin/**,**/obj/**,**/PokemonApp/Client/**"
           dotnet build --no-incremental
           export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
           dotnet tool install --global dotnet-ef
           dotnet ef database update --project PokemonApp --startup-project PokemonApp
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+  dependency-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'zulu'
+      - name: Install OWASP Dependency Check
+        run: |
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.2.1/dependency-check-8.2.1-release.zip
+          unzip dependency-check-8.2.1-release.zip
+          rm dependency-check-8.2.1-release.zip
+          ./dependency-check/bin/dependency-check.sh -s . --out security --format HTML
+      - name: Upload OWASP Dependency Check reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency-check-report
+          path: security
+
+
