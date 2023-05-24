@@ -103,12 +103,8 @@ jobs:
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
   dependenc-check:
-    runs-on: ubuntu-latest
+    runs-on: openjdk-latest
     steps:
-      - name: Install JDK
-        run: |
-          sudo apt-get install default-jdk
-          java -version
       - name: Install OWASP Dependency Check
         run: |
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v8.2.1/dependency-check-8.2.1-release.zip
