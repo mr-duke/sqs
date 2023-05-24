@@ -111,5 +111,11 @@ jobs:
           unzip dependency-check-8.2.1-release.zip
           rm dependency-check-8.2.1-release.zip
           cd dependency-check
-          ls
+          ./bin/dependency-check.sh --project /PokemonApp --out /PokemonApp/security --format HTML
+      - name: Upload OWASP Dependency Check reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency-check-reports
+          path: /PokemonApp/security
+
 
