@@ -121,5 +121,16 @@ jobs:
         with:
           name: dependency-check-report
           path: security
-
+  cypress-gui-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          wait-on: http://localhost:5173
+          start: npx vite --host
 
