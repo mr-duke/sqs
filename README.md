@@ -12,7 +12,7 @@ Der Aufbau dieser Dokumentation orientiert sich am offiziellen [Arc42-Template](
 
 ## Kapitel 0: Voraussetzungen
 Folgende Softwarevoraussetzungen müssen zum lokalen Testen der Anwendung gegegeben sein:
-- Node.js
+- Node.js in der aktuellen LTS-Version
 - .NET 7
 - eine laufende PostgreSQL-Instanz
 
@@ -162,7 +162,33 @@ Die wichtigsten Entscheidungen mit Auswirkungen auf die Architektur werden als s
 
 - **Konformität**: Die Anwendung muss konform mit den relevanten Datenschutzgesetzen und -vorschriften sein und soll keinerlei persönliche Daten verarbeiten.
 
-## KApitel 11: Qualitätssichernde Maßnahmen und Tests
+## Kapitel 11: Qualitätssichernde Maßnahmen und Tests
+### Unittests
+- Testframework: xUnit
+- Testordner: /PokemonApp.Tests
+- Kommentare:
+ Die Tests in `PokemonServiceTests.cd` und `PokemonControllerTests` gehen über einfach Unittests hinaus und ähneln Integrationstests, da hierbei das Zusammenspiel mehrerer Komponenten getestet wird und mit Mocking-Techniken und In-Memory Datenbanken gearbeitet wird.
+
+ ### Integrationstests
+- Testframework: xUnit
+- Testordner: /PokemonApp.Tests
+- Kommentare: 
+In `PokemonControllerIntegrationTests` wird anhand einer laufenden Anwendung getestet, ob sich erfolgreich REST-Aufrufe gegen die API absetzen lassen. Um auch in der CI-Pipeline lauffähig zu sein, wird ein PostgreSQL-Dockercontainer aufgesetzt und verbunden.
+
+### Statische Codeanalyse
+Innerhalb der CI-Pipeline mithilfe von Github Actions (`.github\workflows\cicd.yml`) wird eine Verbindung zu [Sonarcloud](https://sonarcloud.io/project/overview?id=mr-duke_sqs) hergestellt. Neben der statischen Analyse der Codequalität wird auch die Test-Coverage bestimmt und in Sonarcloud angezeigt. Die wichtigsten Ergebnisse der Sonar-Analyse werden in Form von sog. *Badges* prägnant am Anfang dieser Readme-Datei integriert.
+
+### Security-Test
+Neben der Aktivierung der Github-Funktionalität DependaBot wird das Drittanbieter-Tool [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies integriert. Der nach einem CI-Lauf erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
+
+Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcloud zum aktuellem Stand (noch) nicht unterstützt (siehe entsprechenden Eintrag auf [Sonarcloud Community](https://community.sonarsource.com/t/support-dependency-checks-for-known-vulnerabilities/5188)).
+
+### GUI-Tests
+- Testframework: Cypress
+- Testordner: /PokemonApp/Client/src/App.cy.js
+- Kommentare:
+Es werden die häufigsten Szenarien und Nutzereingaben (auch Falscheingaben) per Oberflächentests geprüft. I nder CI-Pipeline werden die Tests im headless-Modus ausgeführt.
+
 
 ## Gewählte Test-Tools
 - Unit-Tests: xUnit
