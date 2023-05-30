@@ -134,7 +134,7 @@ jobs:
           working-directory: ./PokemonApp/Client
           wait-on: http://localhost:5173
           start: npx vite --host
-          spec: App.cy.js
+          #spec: App.cy.js
           config-file: cypress.config.js
           component: true
 
