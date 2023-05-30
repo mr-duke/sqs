@@ -131,7 +131,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          project: ./PokemonApp/Client
+          working-directory: ./PokemonApp/Client
           wait-on: http://localhost:5173
           start: npx vite --host
 
