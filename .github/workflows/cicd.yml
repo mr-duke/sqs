@@ -123,8 +123,6 @@ jobs:
           path: security
   cypress-gui-test:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./PokemonApp/Client
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -132,8 +130,8 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
-        working-directory: ${{env.working-directory}}
         with:
+          project: ./PokemonApp/Client
           wait-on: http://localhost:5173
           start: npx vite --host
 
