@@ -39,13 +39,11 @@ jobs:
       run: |
             dotnet restore
             dotnet build
-            # Set up the connection string for the tests
             export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
             dotnet tool install --global dotnet-ef
             dotnet ef database update --project PokemonApp --startup-project PokemonApp
             dotnet test --no-build --verbosity normal
-  sonar-analysis:
-    #name: Build and analyze
+  sonar-analysis: # Includes running of unit and integration tests to determine test coverage
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -61,14 +59,14 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 11
-          distribution: 'zulu' # Alternative distribution options are available.
+          distribution: 'zulu'
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
@@ -92,7 +90,7 @@ jobs:
           dotnet tool install --global coverlet.console
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"mr-duke_sqs" /o:"mr-duke" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/bin/**,**/obj/**,**/PokemonApp/Client/**"
@@ -102,7 +100,7 @@ jobs:
           dotnet ef database update --project PokemonApp --startup-project PokemonApp
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-  dependency-check:
+  dependency-check-security-test:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 11
@@ -126,15 +124,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           working-directory: ./PokemonApp/Client
           wait-on: http://localhost:5173
           start: npx vite --host
-          #spec: App.cy.js
           config-file: cypress.config.js
           component: true
-
