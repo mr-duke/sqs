@@ -132,6 +132,7 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
+        working-directory: ${{env.working-directory}}
         with:
           wait-on: http://localhost:5173
           start: npx vite --host
