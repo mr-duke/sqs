@@ -134,4 +134,5 @@ jobs:
           working-directory: ./PokemonApp/Client
           wait-on: http://localhost:5173
           start: npx vite --host
+          browser: chrome
 
