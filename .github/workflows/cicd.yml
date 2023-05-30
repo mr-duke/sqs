@@ -136,4 +136,5 @@ jobs:
           start: npx vite --host
           spec: App.cy.js
           config-file: cypress.config.js
+          component: true
 
