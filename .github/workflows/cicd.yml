@@ -127,7 +127,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Change dir to Client
-        run: cd PokemonApp/Client
+        run: |
+            cd ./PokemonApp/Client
+            ls
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
