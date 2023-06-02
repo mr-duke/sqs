@@ -10,13 +10,14 @@ export let options = {
         { duration: '30s', target: 0 }, // scale down
     ],
     thresholds: {
-        http_req_duration: ['p(95)<150'], // 99 % of requests must finish below 150 ms
+        http_req_failed: ['rate<0.02'], // http errors should be less than 2%
+        http_req_duration: ['p(95)<150'], // 95 % of requests must finish below 150 ms
     },
 };
 
 export default () => {
 
-    let response = http.get(`http://127.0.0.1:5099/api/pokemon/1`)
+    let response = http.get(`http://localhost:5099/api/pokemon/1`)
 
     sleep(1);
 }

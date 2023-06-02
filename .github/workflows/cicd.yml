@@ -155,7 +155,6 @@ jobs:
       - name: Start up application
         run: |
               dotnet restore
-              dotnet build --no-restore
               export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
               dotnet tool install --global dotnet-ef
               dotnet ef database update --project PokemonApp --startup-project PokemonApp
@@ -174,10 +173,12 @@ jobs:
               sudo apt-get update
               sudo apt-get install k6
 
-      - name: Run k6
+      - name: Run Load Test
         run: k6 run ./PokemonApp.Tests/PerformanceTests/LoadTest.js
 
-      #- name: Run Load Test
-      #  uses: grafana/k6-action@v0.3.0
-      #  with:
-      #    filename: ./PokemonApp.Tests/PerformanceTests/LoadTest.js
+      # Stress and Spike Tests are only run if necessary because they can be very time-consuming!
+      #- name: Run Stress Test
+      #  run: k6 run ./PokemonApp.Tests/PerformanceTests/StressTest.js
+
+      #- name: Run Spike Test
+      #  run: k6 run ./PokemonApp.Tests/PerformanceTests/SpikeTest.js
