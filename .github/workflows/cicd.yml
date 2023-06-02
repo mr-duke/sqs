@@ -166,5 +166,5 @@ jobs:
         uses: grafana/k6-action@v0.3.0
         with:
           filename: ./PokemonApp.Tests/PerformanceTests/LoadTest.js
-          env:
-            APP_PORT: ${{ APP_PORT }}
+          #env:
+          #  APP_PORT: ${{ APP_PORT }}
