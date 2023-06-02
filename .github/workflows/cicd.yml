@@ -162,7 +162,9 @@ jobs:
               dotnet run --project PokemonApp/PokemonApp.csproj &
 
       - name: Wait for application to start
-        run: sleep 10s
+        run: | 
+              sleep 10s
+              curl -X 'GET' 'http://localhost:5099/api/pokemon/25' -H 'accept: */*'
 
       - name: Run Load Test
         uses: grafana/k6-action@v0.3.0
