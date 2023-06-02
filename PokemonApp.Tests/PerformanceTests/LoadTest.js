@@ -16,7 +16,7 @@ export let options = {
 
 export default () => {
 
-    let response = http.get(`http://127.0.0.1:5099/api/pokemon/1`)
+    let response = http.get(`http://host.docker.internal:5099/api/pokemon/1`)
 
     sleep(1);
 }
