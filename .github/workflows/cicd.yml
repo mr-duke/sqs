@@ -159,12 +159,10 @@ jobs:
               export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
               dotnet tool install --global dotnet-ef
               dotnet ef database update --project PokemonApp --startup-project PokemonApp
-              export APP_PORT=$(dotnet run -- project ./PokemonApp/PokemonApp.csproj)
-              echo "APP_PORT: $APP_PORT"
+              dotnet run --project PokemonApp/PokemonApp.csproj
+              
 
       - name: Run Load Test
         uses: grafana/k6-action@v0.3.0
         with:
           filename: ./PokemonApp.Tests/PerformanceTests/LoadTest.js
-          #env:
-          #  APP_PORT: ${{ APP_PORT }}
