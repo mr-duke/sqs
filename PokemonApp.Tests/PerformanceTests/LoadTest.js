@@ -1,6 +1,8 @@
 ﻿import http from 'k6/http';
 import { sleep } from 'k6';
 
+const appPort = __ENV.APP_PORT; // Access the environment variable
+
 export let options = {
     insecureSkipTLSVerify: true,
     noConnectionReuse: false,
@@ -16,7 +18,7 @@ export let options = {
 
 export default () => {
 
-    let response = http.get("http://localhost:5099/api/pokemon/1")
+    let response = http.get(`http://localhost:${appPort}/api/pokemon/1`)
 
     sleep(1);
 }
