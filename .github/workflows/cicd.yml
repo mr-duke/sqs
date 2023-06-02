@@ -167,4 +167,4 @@ jobs:
         with:
           filename: ./PokemonApp.Tests/PerformanceTests/LoadTest.js
           env:
-            APP_PORT: $APP_PORT
+            APP_PORT: ${{ APP_PORT }}
