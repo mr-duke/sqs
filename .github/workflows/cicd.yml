@@ -176,9 +176,12 @@ jobs:
       - name: Run Load Test
         run: k6 run ./PokemonApp.Tests/PerformanceTests/LoadTest.js
 
-      # Stress and Spike Tests are only run if necessary because they can be very time-consuming!
+      # Stress, Spike and Soak Tests are only run optionally because they are very time-consuming!
       #- name: Run Stress Test
       #  run: k6 run ./PokemonApp.Tests/PerformanceTests/StressTest.js
 
       #- name: Run Spike Test
+      #  run: k6 run ./PokemonApp.Tests/PerformanceTests/SpikeTest.js
+
+      #- name: Run Soak Test
       #  run: k6 run ./PokemonApp.Tests/PerformanceTests/SpikeTest.js

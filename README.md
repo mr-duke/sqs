@@ -165,13 +165,13 @@ Die wichtigsten Entscheidungen mit Auswirkungen auf die Architektur werden als s
 ## Kapitel 11: Qualitätssichernde Maßnahmen und Tests
 ### Unittests
 - Testframework: xUnit
-- Testordner: /PokemonApp.Tests
+- Testordner: `/PokemonApp.Tests`
 - Kommentare:
- Die Tests in `PokemonServiceTests.cd` und `PokemonControllerTests` gehen über einfach Unittests hinaus und ähneln Integrationstests, da hierbei das Zusammenspiel mehrerer Komponenten getestet wird und mit Mocking-Techniken und In-Memory Datenbanken gearbeitet wird.
+ Die Tests in `PokemonServiceTests.cs` und `PokemonControllerTests.cs` gehen über einfach Unittests hinaus und ähneln Integrationstests, da hierbei das Zusammenspiel mehrerer Komponenten getestet wird und mit Mocking-Techniken und In-Memory Datenbanken gearbeitet wird.
 
  ### Integrationstests
 - Testframework: xUnit
-- Testordner: /PokemonApp.Tests
+- Testordner: `/PokemonApp.Tests`
 - Kommentare: 
 In `PokemonControllerIntegrationTests` wird anhand einer laufenden Anwendung getestet, ob sich erfolgreich REST-Aufrufe gegen die API absetzen lassen. Um auch in der CI-Pipeline lauffähig zu sein, wird ein PostgreSQL-Dockercontainer aufgesetzt und verbunden.
 
@@ -179,15 +179,25 @@ In `PokemonControllerIntegrationTests` wird anhand einer laufenden Anwendung get
 Innerhalb der CI-Pipeline mithilfe von Github Actions (`.github\workflows\cicd.yml`) wird eine Verbindung zu [Sonarcloud](https://sonarcloud.io/project/overview?id=mr-duke_sqs) hergestellt. Neben der statischen Analyse der Codequalität wird auch die Test-Coverage bestimmt und in Sonarcloud angezeigt. Die wichtigsten Ergebnisse der Sonar-Analyse werden in Form von sog. *Badges* prägnant am Anfang dieser Readme-Datei integriert.
 
 ### Security-Test
-Neben der Aktivierung der Github-Funktionalität DependaBot wird das Drittanbieter-Tool [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies integriert. Der nach einem CI-Lauf erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
+Neben der Aktivierung des in Github integrierten Service *DependaBot* wird das Drittanbieter-Tool [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies integriert. Der nach einem CI-Lauf erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
 
-Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcloud zum aktuellem Stand (noch) nicht unterstützt (siehe entsprechenden Eintrag auf [Sonarcloud Community](https://community.sonarsource.com/t/support-dependency-checks-for-known-vulnerabilities/5188)).
+Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcloud zum aktuellem Stand (noch) nicht unterstützt (siehe entsprechenden Beitrag auf [Sonarcloud Community](https://community.sonarsource.com/t/support-dependency-checks-for-known-vulnerabilities/5188)).
 
 ### GUI-Tests
-- Testframework: Cypress
-- Testordner: /PokemonApp/Client/src/App.cy.js
+- Testframework: [Cypress](https://www.cypress.io/)
+- Testordner: `/PokemonApp/Client/src/App.cy.js`
 - Kommentare:
-Es werden die häufigsten Szenarien und Nutzereingaben (auch Falscheingaben) per Oberflächentests geprüft. I nder CI-Pipeline werden die Tests im headless-Modus ausgeführt.
+Es werden die häufigsten Szenarien und Nutzereingaben (auch Falscheingaben) per Oberflächentests geprüft. In der CI-Pipeline werden die Tests im headless-Modus ausgeführt.
+
+### Lasttests
+- Testframework: [k6](https://k6.io/)
+- Testordner: `/PokemonApp.Tests/PerformanceTests`
+- Folgende Lasttest-Typen wurden erstellt:
+    - *Load-Test*: Systemverhalten unter normaler, zu erwartender Last
+    - *Stress-Test*: Systemverhalten bei Überschreitung der normalen Last. Das System kann dabei an seine Grenzen kommen
+    - *Spike-Test*: Systemverhalten bei plötzlichem und massivem Anstieg der Zugriffe
+    - *Soak-Test*: Systemverhalten und -verlässlichkeit über einen längeren Zeitraum hinweg
+- Kommentare: Alle Tests wurden in die CI-Pipline integriert. Da Stress, Spike und v.a. Soak-Tests sehr zeitaufwendig sein können, wurden dieser in der Github Actions-Konfigurationsdatei (`.github\workflows\cicd.yml`) bewusst auskommentiert. Bei Bedarf können diese jedoch jederzeit ausgeführt werden. Um die Laufzeiten der CI-Pipeline im Zuge dieses Projektes nicht unnötig in die Länge zu ziehen, wurden außerdem die Zeitintervalle für den Load-Test (`LoadTest.js`) absichtlich verkürzt und hypothetische Nutzerzahlen angenommen. Für authentische Ergebnisse in einem "echten" Anwendunsgszenario sollten Zeitfenster und Anzahl der Nutzer selbstverständlich erhöht werden.
 
 
 ## Gewählte Test-Tools
