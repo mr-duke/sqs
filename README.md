@@ -31,9 +31,19 @@ Bekannte, nicht veränderbare Beschränkungen sind die Vorgaben des Dozenten zur
 - Datenbank
 - Externe REST-API
 
-## Kapitel 3: Kontext
-Das Kontextdiagramm zeigt die logische Architektur des Systems, seine Abgrenzung nach Außen sowie seine Interaktion mit Benutzern und externen Systemen.
+## Kapitel 3: Kontext und Umfang
+Die nachfolgenden Diagramme orientieren sich am sog. [C4 Modell](https://c4model.com/) zur Visualisierung von Software-Architektur
+### Kontextdiagramm (Level 1)
+Das (System-)Kontextdiagramm zeigt die logische Architektur des Systems, seine Abgrenzung nach Außen sowie seine Interaktion mit Benutzern und externen Systemen.
 ![Kontextdiagramm](Grafiken/Kontextdiagramm.png)
+
+### Containerdiagramm (Level 2)
+Im Containerdiagramm werden die zentralen Bausteine des Softwaresystems sowie ihre Interaktionen untereinander dargestellt.
+![Containerdiagramm](Grafiken/Containerdiagramm.png)
+
+### Komponentendiagramm (Level 3)
+Das Komponentendigramm zeigt in einer Detailansicht die Komponenten eines Containers und ihre Beziehungen zueinander.
+![Komponentendiagramm](Grafiken/Komponentendiagramm.png)
 
 
 ## Kapitel 4: Lösungsstrategie
@@ -67,7 +77,7 @@ Eine Schnittstellendefinition ist nach dem Starten der Anwendung unter [http://l
 ## Kapitel 6: Runtime-Sicht
 Das Systemverhalten und das Zusammenspiel der Komponenten lässt sich wie folgt beschreiben:
 
-Nach einer Nutzereingabe prüft das Frontend die Eingabe auf eine gültige Pokemon-Nummer. Bei einer falschen Eingabe, die keinen Integerwert darstellt oder die Anzahl der bisher bekannten Pokemon übersteigt, erhält der Nutzer eien Fehlermeldung und der Eingabebutton wird entsprechend deaktiviert, um das Absenden der falschen Anfrage zu verhindern. 
+Nach einer Nutzereingabe prüft das Frontend die Eingabe auf eine gültige Pokemon-Nummer. Bei einer falschen Eingabe, die keinen Integerwert darstellt oder die Anzahl der bisher bekannten Pokemon übersteigt, erhält der Nutzer eine Fehlermeldung und der Eingabebutton wird entsprechend deaktiviert, um das Absenden der falschen Anfrage zu verhindern. 
 
 Im Falle einer korrekten Eingabe wird die Nutzeranfrage an den REST-Controller im Backend weitergeleitet. Dieser führt ein Parsing und Prüfung des Wertes durch und leitet diesen dann an den entsprenen Service weiter.
 
@@ -141,28 +151,36 @@ Die wichtigsten Entscheidungen mit Auswirkungen auf die Architektur werden als s
 
 
 ## Kapitel 10: Qualität
-### Nicht-funktionale Qualitätsanforderungen:
-(Arc42, nonfunctional requirements, Qualitätseigenschaften ("-ilities"))
+### Nicht-funktionale Qualitätsanforderungen nach ISO 25010
 
-- **Leistung und Skalierbarkeit**: Die Anwendung soll nach Benutzereingaben eine Antwortzeit von durchschnittlich maximal 1 Sekunde einhalten, um eine angemessene Benutzererfahrung zu gewährleisten und Frustration auf Seiten der Nutzer zu verhindern.
+#### Sicherheit
+- **Benutzereingaben**: Das System soll durch Prüfung der Nutzereingaben auf korrekte Datentypen oder ungültige Pokemon-Nummern Sicherheitsrisiken so gut wie möglich verhindern. (*=> sichergestellt durch Komponenten- und GUI-Tests sowie Security-Tests*)
 
-- **Sicherheit**: Das System soll durch Prüfung der Nutzereingaben auf korrekte Datentypen oder ungültige Pokemon-NummernSicherheitsrisiken wie SQL-Injection so gut wie möglich verhindern
+- **Drittanbieter**: Sicherheitslücken in Frameworks und Biliotheken von Drittanbietern sollen bei jedem Buildvorgang erkannt werden (*=> sichergestellt durch Security-Tests*)
 
-- **Verfügbarkeit**: Die Anwendung soll eine zuverlässige und hohe Verfügbarkeit von 99% aufweisen, um sicherzustellen, dass sie für Benutzer beinahe jederzeit verfügbar ist.
+- **Datenschutz**: Die Anwendung muss konform mit den relevanten Datenschutzgesetzen sein und soll keinerlei persönliche Daten verarbeiten. (*=> sichergestellt GUI-Tests und Security-Tests*)
 
-- **Wartbarkeit und Erweiterbarkeit**: Durch Schnittstellen und modularen Aufbau soll die Wartbarkeit der Anwendung gefördert werden, um diese bestmöglich aktualisieren und erweitern zu können, beispielsweise bei einer Änderung der PokeAPI, der JSON-Struktur des HTTP-Response oder Hinzukommen neuer Pokemon nach dem Erscheinen neuer Spiele. 
+#### Effizienz und Performanz
+- **Leistung und Skalierbarkeit**: Die Anwendung soll im regulären Betrieb Anfragen von 400 Benutzern über einen durchschnittlichen Zeitraum von 5 Minuten und plötzliche Lastanstiege (Peaks) auf bis zu 1400 Benutzer für 2 Minuten verarbeiten können. (*=> sichergestellt durch Last- bzw Spiketests*)
 
-- **Testbarkeit**: Die Anwendung soll durch modularen Aufbau zuverlässig testbar sein und eine Testabdeckung von mind. 80% aufweisen.
+#### Wartbarkeit
+- **Testbarkeit**: Die Anwendung soll durch modularen Aufbau zuverlässig testbar sein und eine Testabdeckung von mind. 80% aufweisen. (*=> sichergestellt durch statische Codeanalyse in Sonarcloud und Integration der Test Coverage*)
 
-- **Benutzerfreundlichkeit**: Das Nutzer-Interface soll ergonomisch gestaltet und selbsterklärend bedienbar sein. Alle Funktionen sollen innerhalb von maximal 2 Klicks erreichbar sein, um eine positive Benutzererfahrung zu bieten.
+- **Wartbarkeit und Erweiterbarkeit**: Durch Schnittstellen und modularen Aufbau soll die Wartbarkeit der Anwendung gefördert werden, um diese bestmöglich aktualisieren und erweitern zu können, beispielsweise bei einer Änderung der PokeAPI, der JSON-Struktur des HTTP-Response oder Hinzukommen neuer Pokemon nach dem Erscheinen neuer Spiele. (*=> sichergestellt durch modulare Architektur und Einsatz des MVC-Pattern*)
 
-- **Interoperabilität und Integration**: Die Anwendung soll in der Lage sein, mit anderen Systemen und Komponenten durch APIs und Schnittstellen zu kommunizieren
+- **Wirtschaftlichkeit**: Die Kosten für Entwicklung und Betrieb der Anwendung sollen durch ausschließlichen Einsatz von Open-Source-Tools minimiert werden. (*=> sichergestellt durch Wahl des Technik-Stacks*)
 
-- **Wirtschaftlichkeit**: Die Kosten für Entwicklung und Betrieb der Anwendung sollen durch ausschließlichen Einsatz von Open-Source-Tools minimiert werden.
+#### Benutzbarkeit
+- **Benutzerfreundlichkeit**: Das Nutzer-Interface soll ergonomisch gestaltet und selbsterklärend bedienbar sein. Alle Funktionen sollen innerhalb von maximal 2 Klicks erreichbar sein, um eine positive Benutzererfahrung zu bieten. (*=> sichergestellt durch manuelle Tests und teilweise durch GUI-Tests*)
 
-- **Konformität**: Die Anwendung muss konform mit den relevanten Datenschutzgesetzen und -vorschriften sein und soll keinerlei persönliche Daten verarbeiten.
+#### Kompatibilität
+- **Interoperabilität und Integration**: Die verschiedenen Komponenten der Anwendung sollen sich zu einer lauffähigen Anwendung integrieren lassen und mit anderen Systemen und Komponenten durch APIs kommunizieren (*=> sichergestellt durch Integrationstests und modulare Architektur*)
+
+Die weiteren Qualitätseigenschaften *funktionale Eignung*, *Portabilität* und *Zuverlässigkeit* wurden für das Projekt und dessen Ziele als weniger relevant betrachtet.
+
 
 ## Kapitel 11: Qualitätssichernde Maßnahmen und Tests
+Alle Tests sind lokal, aber auch automatisiert in der CI-Pipeline (siehe `.github\workflows\cicd.yml`) ausführbar.
 ### Unittests
 - Testframework: xUnit
 - Testordner: `/PokemonApp.Tests`
@@ -179,7 +197,7 @@ In `PokemonControllerIntegrationTests` wird anhand einer laufenden Anwendung get
 Innerhalb der CI-Pipeline mithilfe von Github Actions (`.github\workflows\cicd.yml`) wird eine Verbindung zu [Sonarcloud](https://sonarcloud.io/project/overview?id=mr-duke_sqs) hergestellt. Neben der statischen Analyse der Codequalität wird auch die Test-Coverage bestimmt und in Sonarcloud angezeigt. Die wichtigsten Ergebnisse der Sonar-Analyse werden in Form von sog. *Badges* prägnant am Anfang dieser Readme-Datei integriert.
 
 ### Security-Test
-Neben der Aktivierung des in Github integrierten Service *DependaBot* wird das Drittanbieter-Tool [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies integriert. Der nach einem CI-Lauf erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
+Neben der Aktivierung des in Github integrierten Service *DependaBot* wird das Drittanbieter-Tool [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies integriert. Der nach einem Durchlauf der CI-Pipeline erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
 
 Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcloud zum aktuellem Stand (noch) nicht unterstützt (siehe entsprechenden Beitrag auf [Sonarcloud Community](https://community.sonarsource.com/t/support-dependency-checks-for-known-vulnerabilities/5188)).
 
@@ -187,7 +205,7 @@ Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcl
 - Testframework: [Cypress](https://www.cypress.io/)
 - Testordner: `/PokemonApp/Client/src/App.cy.js`
 - Kommentare:
-Es werden die häufigsten Szenarien und Nutzereingaben (auch Falscheingaben) per Oberflächentests geprüft. In der CI-Pipeline werden die Tests im headless-Modus ausgeführt.
+Es werden die häufigsten Szenarien und Nutzereingaben (auch Falscheingaben) per Oberflächentests geprüft. In der CI-Pipeline werden die Tests im Headless-Modus ausgeführt.
 
 ### Lasttests
 - Testframework: [k6](https://k6.io/)
