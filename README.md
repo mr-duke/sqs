@@ -197,7 +197,10 @@ In `PokemonControllerIntegrationTests` wird anhand einer laufenden Anwendung get
 Innerhalb der CI-Pipeline mithilfe von Github Actions (`.github\workflows\cicd.yml`) wird eine Verbindung zu [Sonarcloud](https://sonarcloud.io/project/overview?id=mr-duke_sqs) hergestellt. Neben der statischen Analyse der Codequalität wird auch die Test-Coverage bestimmt und in Sonarcloud angezeigt. Die wichtigsten Ergebnisse der Sonar-Analyse werden in Form von sog. *Badges* prägnant am Anfang dieser Readme-Datei integriert.
 
 ### Security-Test
-Neben der Aktivierung des in Github integrierten Service *DependaBot* wird das Drittanbieter-Tool [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies integriert. Der nach einem Durchlauf der CI-Pipeline erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
+Folgende Security-Tests bzw. Maßnahmen wurden durchgeführt:
+- Aktivierung des in Github integrierten Service *DependaBot* 
+- Integration von [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies. Der nach einem Durchlauf der CI-Pipeline erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
+- Sog. Dynamic Application Security Testing (DAST) mit 
 
 Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcloud zum aktuellem Stand (noch) nicht unterstützt (siehe entsprechenden Beitrag auf [Sonarcloud Community](https://community.sonarsource.com/t/support-dependency-checks-for-known-vulnerabilities/5188)).
 
@@ -262,17 +265,3 @@ Es werden die häufigsten Szenarien und Nutzereingaben (auch Falscheingaben) per
         - IaC Security (Terraform, Dockerfile, k8s): Snyk, Aqua
         - ZED Attack Proxy
          
-
-
-
-Aufgaben: 
-- Recherche zu Testframeworks
-- ~~Rudimentäre Github Actions erstellen~~
-    - ~~Kompiliert der Code?~~
-    - ~~laufen Unittest?~~
-- ~~Erste Tests bereits schreiben~~
-- Lasttest für die API schreiben
-- Security-Test schreiben
-    - Dependency Check (per GitHub Action)
-    - (evtl. Versionen autmoatisch aktualisieren lassen per Github Action)
-    - Mit OWASP ZAP testen
