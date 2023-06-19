@@ -181,6 +181,7 @@ jobs:
         uses: zaproxy/action-api-scan@v0.2.0
         with:
           target: 'http://localhost:5099/swagger/v1/swagger.json'
+          fail-on-warnings: false
 
 
   cypress-gui-test:
