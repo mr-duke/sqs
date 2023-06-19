@@ -24,16 +24,14 @@ jobs:
         
     - name: Build Backend
       run: |
-            dotnet restore
-            dotnet build --no-restore
+          dotnet restore
+          dotnet build --no-restore
 
     - name: Build Frontend
-      uses: actions/cache@v3
-      with:
-        working-directory: ./PokemonApp/Client
       run: |
-            npm install
-            npm build
+          cd ./PokemonApp/Client
+          npm install
+          npm build
   
   unit-and-integration-tests:
     runs-on: ubuntu-latest
@@ -68,10 +66,8 @@ jobs:
             dotnet test --no-build --verbosity normal
 
     - name: Run unit tests (Frontend)
-      uses: actions/cache@v3
-      with:
-        working-directory: ./PokemonApp/Client
       run: |
+            cd ./PokemonApp/Client
             npm install
             npm run test:unit
 
