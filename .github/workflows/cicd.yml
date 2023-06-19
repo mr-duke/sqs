@@ -178,10 +178,9 @@ jobs:
               dotnet ef database update --project PokemonApp --startup-project PokemonApp
               dotnet run --project PokemonApp/PokemonApp.csproj &
       - name: OWASP ZAP API Scan
-        permissions: write-all
         uses: zaproxy/action-api-scan@v0.2.0
         with:
-          target: 'http://localhost:5099/api/pokemon/1'
+          target: 'http://localhost:5099/swagger/v1/swagger.json'
 
 
   cypress-gui-test:
