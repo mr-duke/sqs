@@ -31,7 +31,7 @@ jobs:
       run: |
           cd ./PokemonApp/Client
           npm install
-          npm build
+          npm run build
   
   unit-and-integration-tests:
     runs-on: ubuntu-latest
@@ -60,6 +60,7 @@ jobs:
     - name: Run unit and integration tests (Backend)
       run: |
             dotnet restore
+            dotnet build --no-incremental
             export ConnectionStrings__DefaultConnection="Host=localhost;Database=PokemonDB;Username=postgres;Password=su;Port=5432"
             dotnet tool install --global dotnet-ef
             dotnet ef database update --project PokemonApp --startup-project PokemonApp
