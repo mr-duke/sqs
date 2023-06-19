@@ -34,7 +34,7 @@ export default {
       let validInput
       const parsedValue = parseInt(this.inputValue, 10);
 
-      if (this.inputValue < this.minValue || this.inputValue > this.maxValue || isNaN(parsedValue) || !Number.isInteger(parsedValue)) {
+      if (parsedValue< this.minValue || parsedValue > this.maxValue || isNaN(parsedValue) || !Number.isInteger(parsedValue)) {
         this.notification = `Input value must be between ${this.minValue} and ${this.maxValue}`
         validInput = false
       } else {
