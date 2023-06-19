@@ -181,11 +181,16 @@ Die weiteren Qualitätseigenschaften *funktionale Eignung*, *Portabilität* und 
 
 ## Kapitel 11: Qualitätssichernde Maßnahmen und Tests
 Alle Tests sind lokal, aber auch automatisiert in der CI-Pipeline (siehe `.github\workflows\cicd.yml`) ausführbar.
-### Unittests
+### Unittests (Backend)
 - Testframework: xUnit
 - Testordner: `/PokemonApp.Tests`
 - Kommentare:
  Die Tests in `PokemonServiceTests.cs` und `PokemonControllerTests.cs` gehen über einfach Unittests hinaus und ähneln Integrationstests, da hierbei das Zusammenspiel mehrerer Komponenten getestet wird und mit Mocking-Techniken und In-Memory Datenbanken gearbeitet wird.
+
+### Unittests (Frontend)
+- Testframework: [vitest](https://vitest.dev/)
+- Testdatei: `/PokemonApp/Client/src/App.spec.js`
+- Kommentare: Die Unittests für das Frontend prüfen die korrekte Validierung der Benutzereingaben. Dabei werden verschiedene Eingabeszenarien berücksichtigt, wie beispielsweise zu niedrige oder zu hohe Pokemon-Nummern, welche nach aktuellem Stand nicht existieren, oder auch ungültige Eingabekombinationen aus Ziffern, Buchstaben und Sonderzeichen.
 
  ### Integrationstests
 - Testframework: xUnit
@@ -199,14 +204,12 @@ Innerhalb der CI-Pipeline mithilfe von Github Actions (`.github\workflows\cicd.y
 ### Security-Test
 Folgende Security-Tests bzw. Maßnahmen wurden durchgeführt:
 - Aktivierung des in Github integrierten Service *DependaBot* 
-- Integration von [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies. Der nach einem Durchlauf der CI-Pipeline erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts` am Ende der Übersichtsseite als HTML-Datei downloadbar.
-- Sog. Dynamic Application Security Testing (DAST) mit 
-
-Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcloud zum aktuellem Stand (noch) nicht unterstützt (siehe entsprechenden Beitrag auf [Sonarcloud Community](https://community.sonarsource.com/t/support-dependency-checks-for-known-vulnerabilities/5188)).
+- Integration von [OWASP Dependency Check](https://owasp.org/www-project-dependency-check/) in die CI-Pipeline zur automatischen Analyse von gefährdeten Packages und Dependencies. Der erzeugte Dependency-Check Bericht ist in Github unter `Actions -> Artifacts -> dependency-check-report` am Ende der Übersichtsseite downloadbar. Bedauerlicherweise wird die Integration der Dependency-Check Berichte in Sonarcloud zum aktuellem Stand noch nicht unterstützt (siehe entsprechenden Beitrag auf [Sonarcloud Community](https://community.sonarsource.com/t/support-dependency-checks-for-known-vulnerabilities/5188)).
+- Integration von [OWASP ZAP](https://www.zaproxy.org/) in die CI-Pipeline zur Durchführung von *Dynamic Application Security Testing* der REST API. Dem ZAP-Scanner wurde dabei die OpenAPI-Definition der REST API übergeben. Der erzeugte Bericht ist in Github unter `Actions -> Artifacts -> zap_scan` am Ende der Übersichtsseite downloadbar.
 
 ### GUI-Tests
 - Testframework: [Cypress](https://www.cypress.io/)
-- Testordner: `/PokemonApp/Client/src/App.cy.js`
+- Testdatei: `/PokemonApp/Client/src/App.cy.js`
 - Kommentare:
 Es werden die häufigsten Szenarien und Nutzereingaben (auch Falscheingaben) per Oberflächentests geprüft. In der CI-Pipeline werden die Tests im Headless-Modus ausgeführt.
 

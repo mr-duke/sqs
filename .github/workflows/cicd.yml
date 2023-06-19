@@ -183,7 +183,6 @@ jobs:
           target: 'http://localhost:5099/swagger/v1/swagger.json'
           allow_issue_writing: false
 
-
   cypress-gui-test:
     runs-on: ubuntu-latest
     steps:
