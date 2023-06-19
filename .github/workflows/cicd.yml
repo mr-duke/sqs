@@ -28,6 +28,7 @@ jobs:
             dotnet build --no-restore
 
     - name: Build Frontend
+      uses: actions/cache@v3
       with:
         working-directory: ./PokemonApp/Client
       run: |
@@ -67,6 +68,7 @@ jobs:
             dotnet test --no-build --verbosity normal
 
     - name: Run unit tests (Frontend)
+      uses: actions/cache@v3
       with:
         working-directory: ./PokemonApp/Client
       run: |
