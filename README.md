@@ -67,7 +67,7 @@ Bei **.NET** handelt es sich um eines der meistverbreitetsten Frameworks für We
 **PokeAPI** ist ein laufend gepflegtes, umfangreiches REST-API zum Abruf von Pokemon-Daten. Seine kostenlose Nutzung und der Verzicht auf einen API-Key gestalten die Einbindung in die PokemonApp besonders einfach und performant.
 
 ## Kapitel 5: Baustein-Sicht 
-Die Bausteinsicht ist aus dem Kontextdiagramm in [Kapitel 3](#kapitel-3-kontext) ersichtlich und bedarf aufgrund der Einfachheit der Anwendung keiner weiteren Erläuterung.
+Die Bausteinsicht ist aus dem Kontextdiagramm in [Kapitel 3](#kapitel-3-kontext-und-umfang) ersichtlich und bedarf aufgrund der Einfachheit der Anwendung keiner weiteren Erläuterung.
 
 Eine Schnittstellendefinition nach OpenAPI ist nach dem Starten der Anwendung unter [http://localhost:5099/swagger/index.html](http://localhost:5099/swagger/index.html) erreichbar.
 
